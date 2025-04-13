@@ -34,7 +34,7 @@ import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
 
 data class DetailScreenState(
-    val movie: Movie
+    val movie: Movie? = null
 )
 
 @Composable
@@ -72,53 +72,62 @@ fun DetailScreenContent(
 
         is UiState.Success -> {
             val movie = uiState.data.movie
-            Column(
-                modifier = modifier
-            ) {
-                IconButton(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    onClick = onBackPress
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
+            if (movie != null) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp)
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = modifier
                 ) {
-                    AsyncImage(
-                        model = movie.backdropPath,
-                        contentDescription = "backdrop",
+                    IconButton(
+                        modifier = Modifier.padding(vertical = 16.dp),
+                        onClick = onBackPress
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(360.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                        contentScale = ContentScale.FillBounds
-                    )
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        AsyncImage(
+                            model = movie.backdropPath,
+                            contentDescription = "backdrop",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(360.dp)
+                                .clip(RoundedCornerShape(8.dp)),
+                            contentScale = ContentScale.FillBounds
+                        )
 
-                    Spacer(Modifier.height(16.dp))
+                        Spacer(Modifier.height(16.dp))
 
-                    Text(
-                        text = movie.title,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.SemiBold
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        Text(
+                            text = movie.title,
+                            style = MaterialTheme.typography.bodyLarge.copy(
+                                fontWeight = FontWeight.SemiBold
+                            ),
+                            modifier = Modifier.fillMaxWidth()
+                        )
 
-                    Spacer(Modifier.height(8.dp))
+                        Spacer(Modifier.height(8.dp))
 
-                    Text(
-                        text = movie.overview,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                        Text(
+                            text = movie.overview,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                }
+            } else {
+                Box(
+                    modifier = modifier,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Something Went Wrong!")
                 }
             }
         }

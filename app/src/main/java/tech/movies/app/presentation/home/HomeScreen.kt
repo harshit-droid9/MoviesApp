@@ -39,7 +39,7 @@ import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
 
 data class HomeScreenState(
-    val movies: List<Movie>
+    val movies: List<Movie> = emptyList()
 )
 
 @Composable

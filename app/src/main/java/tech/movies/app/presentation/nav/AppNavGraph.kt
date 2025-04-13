@@ -1,5 +1,8 @@
 package tech.movies.app.presentation.nav
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -37,7 +40,19 @@ fun AppNavGraph(
 
         composable(
             route = ScreenRoutes.Detail.route,
-            arguments = listOf(navArgument("movie_id") { type = NavType.IntType })
+            arguments = listOf(navArgument("movie_id") { type = NavType.IntType }),
+            enterTransition = {
+                slideInHorizontally(
+                    animationSpec = tween(300),
+                    initialOffsetX = { it }
+                )
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    animationSpec = tween(300),
+                    targetOffsetX = { it }
+                )
+            }
         ) {
             DetailScreen(
                 onBackPress = {
