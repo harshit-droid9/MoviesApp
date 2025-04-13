@@ -22,12 +22,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,7 +89,7 @@ fun HomeScreenContent(
                 modifier = modifier,
             ) {
                 SearchBar(
-                    value = "",
+                    value = TextFieldValue(""),
                     onValueChange = {},
                     modifier = Modifier
                         .fillMaxWidth()
@@ -167,13 +171,15 @@ fun MovieGrid(
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     isEnabled: Boolean,
 ) {
     OutlinedTextField(
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = { newValue ->
+            onValueChange(newValue.copy(selection = TextRange(newValue.text.length)))
+        },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "search") },
         placeholder = { Text("Search movies") },
         singleLine = true,

@@ -11,11 +11,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,7 +45,7 @@ fun SearchScreen(
     ) { internalPadding ->
         SearchScreenContent(
             state = state,
-            onQueryChanges = { viewModel.onQueryChanged(it) },
+            onQueryChanged = { viewModel.onQueryChanged(it) },
             onMovieClicked = onMovieClicked,
             modifier = Modifier
                 .fillMaxSize()
@@ -54,18 +58,24 @@ fun SearchScreen(
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
     state: UiState<SearchScreenState>,
-    onQueryChanges: (String) -> Unit,
+    onQueryChanged: (String) -> Unit,
     onMovieClicked: (Int) -> Unit
 ) {
     when (state) {
         is UiState.Loading -> Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
-        ) { CircularProgressIndicator() }
+        ) {
+            CircularProgressIndicator()
+        }
 
         is UiState.Success -> {
             val focusRequester = remember { FocusRequester() }
             LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+            var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+                mutableStateOf(TextFieldValue(state.data.query))
+            }
 
             Column(modifier = modifier) {
                 SearchBar(
@@ -73,8 +83,11 @@ fun SearchScreenContent(
                         .fillMaxWidth()
                         .padding(16.dp)
                         .focusRequester(focusRequester),
-                    value = state.data.query,
-                    onValueChange = onQueryChanges,
+                    value = searchQuery,
+                    onValueChange = { newValue ->
+                        searchQuery = newValue
+                        onQueryChanged(searchQuery.text)
+                    },
                     isEnabled = true
                 )
 
@@ -91,7 +104,9 @@ fun SearchScreenContent(
         is UiState.Error -> Box(
             modifier = modifier,
             contentAlignment = Alignment.Center
-        ) { Text(state.errorMessage) }
+        ) {
+            Text(state.errorMessage)
+        }
     }
 }
 
