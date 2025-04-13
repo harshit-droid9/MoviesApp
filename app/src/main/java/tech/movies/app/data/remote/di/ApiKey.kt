@@ -1,4 +1,4 @@
-package tech.movies.app.data.remote
+package tech.movies.app.data.remote.di
 
 import jakarta.inject.Qualifier
 

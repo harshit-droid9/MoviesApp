@@ -1,4 +1,4 @@
-package tech.movies.app.data.remote
+package tech.movies.app.data.remote.di
 
 import dagger.Module
 import dagger.Provides
@@ -9,6 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import tech.movies.app.BuildConfig
+import tech.movies.app.data.remote.ApiService
 import javax.inject.Singleton
 
 @Module
