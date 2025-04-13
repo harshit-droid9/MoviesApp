@@ -42,7 +42,7 @@ fun DetailScreen(
     onBackPress: () -> Unit
 ) {
     val viewModel: DetailViewModel = hiltViewModel()
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
         modifier = Modifier

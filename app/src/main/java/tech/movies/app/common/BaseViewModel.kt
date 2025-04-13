@@ -11,13 +11,14 @@ abstract class BaseViewModel<S>(
 ) : ViewModel() {
 
     protected val currentState = MutableStateFlow(initial)
-
+    private val _uiState = MutableStateFlow<UiState<S>>(UiState.Success(initial))
     val uiState: StateFlow<UiState<S>> =
         channelFlow {
-            if (isLoading) {
-                send(UiState.Loading)
-            } else {
-                send(UiState.Success(currentState.value))
+
+            launch {
+                _uiState
+                    .drop(1) // we already sending with initial value
+                    .collect { send(it) }
             }
 
             initialLoad()?.let { flow ->
@@ -37,7 +38,7 @@ abstract class BaseViewModel<S>(
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = UiState.Success(initial)
+                initialValue = if (isLoading) UiState.Loading else UiState.Success(initial)
             )
 
 
@@ -45,5 +46,6 @@ abstract class BaseViewModel<S>(
 
     protected fun setState(reducer: S.() -> S) {
         currentState.value = currentState.value.reducer()
+        _uiState.tryEmit(UiState.Success(currentState.value))
     }
 }
