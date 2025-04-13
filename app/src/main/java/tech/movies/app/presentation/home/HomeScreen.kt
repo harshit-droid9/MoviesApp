@@ -3,7 +3,6 @@ package tech.movies.app.presentation.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -16,16 +15,13 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
+import tech.movies.app.presentation.util.UiStateHandler
 
 data class HomeScreenState(
     val movies: List<Movie> = emptyList()
@@ -76,15 +73,10 @@ fun HomeScreenContent(
     onMovieClicked: (Int) -> Unit,
     onSearchBarClick: () -> Unit,
 ) {
-    when (uiState) {
-        is UiState.Loading -> Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-
-        is UiState.Success -> {
+    UiStateHandler(
+        uiState = uiState,
+        modifier = modifier,
+        success = { state ->
             Column(
                 modifier = modifier,
             ) {
@@ -98,7 +90,7 @@ fun HomeScreenContent(
                     isEnabled = false
                 )
                 MovieGrid(
-                    movies = uiState.data.movies,
+                    movies = state.movies,
                     onMovieClicked = onMovieClicked,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,20 +98,7 @@ fun HomeScreenContent(
                 )
             }
         }
-
-        else -> {
-            Box(
-                modifier = modifier,
-                contentAlignment = Alignment.Center
-            ) {
-                if (uiState is UiState.Error) {
-                    Text(uiState.errorMessage)
-                } else {
-                    Text("Something Went Wrong!")
-                }
-            }
-        }
-    }
+    )
 }
 
 @Composable

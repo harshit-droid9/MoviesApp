@@ -1,13 +1,10 @@
 package tech.movies.app.presentation.search
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -27,6 +23,7 @@ import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
 import tech.movies.app.presentation.home.MovieGrid
 import tech.movies.app.presentation.home.SearchBar
+import tech.movies.app.presentation.util.UiStateHandler
 
 data class SearchScreenState(
     val query: String = "",
@@ -44,7 +41,7 @@ fun SearchScreen(
         modifier = Modifier.fillMaxSize()
     ) { internalPadding ->
         SearchScreenContent(
-            state = state,
+            uiState = state,
             onQueryChanged = { viewModel.onQueryChanged(it) },
             onMovieClicked = onMovieClicked,
             modifier = Modifier
@@ -57,24 +54,19 @@ fun SearchScreen(
 @Composable
 fun SearchScreenContent(
     modifier: Modifier = Modifier,
-    state: UiState<SearchScreenState>,
+    uiState: UiState<SearchScreenState>,
     onQueryChanged: (String) -> Unit,
     onMovieClicked: (Int) -> Unit
 ) {
-    when (state) {
-        is UiState.Loading -> Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-
-        is UiState.Success -> {
+    UiStateHandler(
+        uiState = uiState,
+        modifier = modifier,
+        success = { state ->
             val focusRequester = remember { FocusRequester() }
             LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
             var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-                mutableStateOf(TextFieldValue(state.data.query))
+                mutableStateOf(TextFieldValue(state.query))
             }
 
             Column(modifier = modifier) {
@@ -92,7 +84,7 @@ fun SearchScreenContent(
                 )
 
                 MovieGrid(
-                    movies = state.data.results,
+                    movies = state.results,
                     onMovieClicked = onMovieClicked,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -100,13 +92,6 @@ fun SearchScreenContent(
                 )
             }
         }
-
-        is UiState.Error -> Box(
-            modifier = modifier,
-            contentAlignment = Alignment.Center
-        ) {
-            Text(state.errorMessage)
-        }
-    }
+    )
 }
 

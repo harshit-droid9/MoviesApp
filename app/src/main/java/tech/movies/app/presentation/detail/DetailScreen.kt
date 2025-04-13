@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
+import tech.movies.app.presentation.util.UiStateHandler
 
 data class DetailScreenState(
     val movie: Movie? = null
@@ -65,13 +66,11 @@ fun DetailScreenContent(
     onBackPress: () -> Unit,
     uiState: UiState<DetailScreenState>
 ) {
-    when (uiState) {
-        is UiState.Loading -> {
-
-        }
-
-        is UiState.Success -> {
-            val movie = uiState.data.movie
+    UiStateHandler(
+        uiState = uiState,
+        modifier = modifier,
+        success = { state ->
+            val movie = state.movie
             if (movie != null) {
                 Column(
                     modifier = modifier
@@ -131,18 +130,5 @@ fun DetailScreenContent(
                 }
             }
         }
-
-        else -> {
-            Box(
-                modifier = modifier,
-                contentAlignment = Alignment.Center
-            ) {
-                if (uiState is UiState.Error) {
-                    Text(uiState.errorMessage)
-                } else {
-                    Text("Something Went Wrong!")
-                }
-            }
-        }
-    }
+    )
 }
