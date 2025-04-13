@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import tech.movies.app.data.local.LocalDataSource
-import tech.movies.app.data.local.database.MovieEntity
 import tech.movies.app.data.mapper.toDbEntities
 import tech.movies.app.data.remote.RemoteDataSource
 import tech.movies.app.domain.model.Movie
