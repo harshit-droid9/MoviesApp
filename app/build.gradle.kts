@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,6 +21,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val localProps = Properties().apply {
+            val file = rootProject.file("local.properties")
+            if (file.exists()) load(file.inputStream())
+        }
+        val apiKey = requireNotNull(localProps["API_KEY"] as? String) {
+            "API_KEY is missing in local.properties, generate your api key from tmdb.org"
+        }
+        buildConfigField("String", "API_KEY", "\"${apiKey}\"")
     }
 
     buildTypes {
@@ -39,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -70,6 +82,7 @@ dependencies {
     // Retrofit for Networking
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+    implementation(libs.http.logging)
 
     // Coil for Image Loading in Compose
     implementation(libs.coil.compose)
