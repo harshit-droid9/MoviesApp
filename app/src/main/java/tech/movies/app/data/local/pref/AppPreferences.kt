@@ -15,7 +15,7 @@ class AppPreferences @Inject constructor(
 
     }
 
-    suspend fun saveLastSyncTime(epochMillis: Long = System.currentTimeMillis()) {
+    suspend fun saveLastSyncTime(epochMillis: Long) {
         withContext(Dispatchers.IO) {
             prefs.edit().putLong(KEY_LAST_SYNC, epochMillis).apply()
         }

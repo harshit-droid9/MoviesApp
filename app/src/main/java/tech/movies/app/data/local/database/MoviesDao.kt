@@ -4,10 +4,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 
 interface MoviesDao {
     @Query("SELECT * FROM movies")
-    suspend fun getAllMovies(): List<MovieEntity>
+    fun getAllMovies(): Flow<List<MovieEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movies: List<MovieEntity>)
