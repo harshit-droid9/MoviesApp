@@ -52,7 +52,7 @@ fun HomeScreen(
     onSearchBarClick: () -> Unit,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
