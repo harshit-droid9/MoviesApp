@@ -19,13 +19,17 @@ class RepositoryImpl @Inject constructor(
 ) : Repository {
 
     override fun fetchTrendingMovies(): Flow<List<Movie>> {
-        return  localDataSource.getTrendingMovies().map { it.toMovies() }
+        return localDataSource.getTrendingMovies().map { it.toMovies() }
             .onStart {
                 val age = System.currentTimeMillis() - localDataSource.getLastSyncTime()
                 if (age > 60 * 60_000) {
                     refreshTrendingMovies()
                 }
             }
+    }
+
+    override fun getMovieById(movieId: Int): Flow<Movie> {
+        return localDataSource.getMovieById(movieId)
     }
 
     private suspend fun refreshTrendingMovies() {

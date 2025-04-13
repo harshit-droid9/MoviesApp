@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import tech.movies.app.data.local.database.MovieEntity
 import tech.movies.app.data.local.database.MoviesDao
 import tech.movies.app.data.local.pref.AppPreferences
+import tech.movies.app.domain.model.Movie
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
@@ -26,4 +27,8 @@ class LocalDataSource @Inject constructor(
     suspend fun getLastSyncTime(): Long = pref.lastSyncTime()
 
     suspend fun saveLastSyncTime(epochMillis: Long) = pref.saveLastSyncTime(epochMillis)
+
+    fun getMovieById(movieId: Int): Flow<Movie> {
+        return moviesDao.getMovieById(movieId)
+    }
 }

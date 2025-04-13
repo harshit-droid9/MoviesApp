@@ -46,8 +46,8 @@ data class HomeScreenState(
 fun HomeScreen(
     onMovieClick: (Int) -> Unit,
     onSearchBarClick: () -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
         modifier = Modifier

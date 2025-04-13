@@ -15,7 +15,10 @@ import tech.movies.app.presentation.search.SearchScreen
 fun AppNavGraph(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(navController, startDestination = ScreenRoutes.Home.route) {
+    NavHost(
+        navController = navController,
+        startDestination = ScreenRoutes.Home.route
+    ) {
 
         composable(
             route = ScreenRoutes.Home.route
@@ -35,12 +38,10 @@ fun AppNavGraph(
         composable(
             route = ScreenRoutes.Detail.route,
             arguments = listOf(navArgument("movie_id") { type = NavType.IntType })
-        ) { backStackEntry ->
+        ) {
             DetailScreen(
-                movieId = backStackEntry.arguments?.getInt("movie_id")
-                    ?: throw IllegalArgumentException("Movie id is missing"),
                 onBackPress = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }
@@ -50,7 +51,7 @@ fun AppNavGraph(
         ) {
             SearchScreen(
                 onBackPress = {
-                    navController.popBackStack()
+                    navController.navigateUp()
                 }
             )
         }

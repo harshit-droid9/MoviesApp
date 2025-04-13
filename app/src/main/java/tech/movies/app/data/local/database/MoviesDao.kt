@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
+import tech.movies.app.domain.model.Movie
 
 @Dao
 interface MoviesDao {
@@ -25,4 +26,7 @@ interface MoviesDao {
         deleteAllEntries()
         insert(movies)
     }
+
+    @Query("SELECT * FROM movies WHERE id = :movieId")
+    fun getMovieById(movieId: Int): Flow<Movie>
 }

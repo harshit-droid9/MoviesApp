@@ -5,4 +5,6 @@ import tech.movies.app.domain.model.Movie
 
 interface Repository {
     fun fetchTrendingMovies(): Flow<List<Movie>>
+
+    fun getMovieById(movieId: Int): Flow<Movie>
 }
