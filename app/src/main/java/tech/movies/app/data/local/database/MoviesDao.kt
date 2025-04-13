@@ -29,4 +29,7 @@ interface MoviesDao {
 
     @Query("SELECT * FROM movies WHERE id = :movieId")
     fun getMovieById(movieId: Int): Flow<Movie>
+
+    @Query("SELECT * FROM movies WHERE title LIKE '%' || :query || '%' ")
+    suspend fun searchMovies(query: String): List<Movie>
 }

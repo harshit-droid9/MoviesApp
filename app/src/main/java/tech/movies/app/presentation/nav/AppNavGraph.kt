@@ -27,7 +27,7 @@ fun AppNavGraph(
             route = ScreenRoutes.Home.route
         ) {
             HomeScreen(
-                onMovieClick = {
+                onMovieClicked = {
                     navController.navigate(
                         ScreenRoutes.Detail.route.replace("{movie_id}", it.toString())
                     )
@@ -65,8 +65,10 @@ fun AppNavGraph(
             route = ScreenRoutes.Search.route
         ) {
             SearchScreen(
-                onBackPress = {
-                    navController.navigateUp()
+                onMovieClicked = {
+                    navController.navigate(
+                        ScreenRoutes.Detail.route.replace("{movie_id}", it.toString())
+                    )
                 }
             )
         }

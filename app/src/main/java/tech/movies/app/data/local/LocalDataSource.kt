@@ -31,4 +31,8 @@ class LocalDataSource @Inject constructor(
     fun getMovieById(movieId: Int): Flow<Movie> {
         return moviesDao.getMovieById(movieId)
     }
+
+    suspend fun searchMovies(query: String): List<Movie> {
+        return moviesDao.searchMovies(query)
+    }
 }

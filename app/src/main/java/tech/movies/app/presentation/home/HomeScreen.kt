@@ -44,7 +44,7 @@ data class HomeScreenState(
 
 @Composable
 fun HomeScreen(
-    onMovieClick: (Int) -> Unit,
+    onMovieClicked: (Int) -> Unit,
     onSearchBarClick: () -> Unit,
 ) {
     val viewModel: HomeViewModel = hiltViewModel()
@@ -59,7 +59,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(internalPadding),
             uiState = state,
-            onMovieClick = onMovieClick,
+            onMovieClicked = onMovieClicked,
             onSearchBarClick = onSearchBarClick,
         )
     }
@@ -69,7 +69,7 @@ fun HomeScreen(
 fun HomeScreenContent(
     modifier: Modifier = Modifier,
     uiState: UiState<HomeScreenState>,
-    onMovieClick: (Int) -> Unit,
+    onMovieClicked: (Int) -> Unit,
     onSearchBarClick: () -> Unit,
 ) {
     when (uiState) {
@@ -95,7 +95,7 @@ fun HomeScreenContent(
                 )
                 MovieGrid(
                     movies = uiState.data.movies,
-                    onMovieClick = onMovieClick,
+                    onMovieClicked = onMovieClicked,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -119,9 +119,9 @@ fun HomeScreenContent(
 }
 
 @Composable
-private fun MovieGrid(
+fun MovieGrid(
     movies: List<Movie>,
-    onMovieClick: (Int) -> Unit,
+    onMovieClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -138,7 +138,7 @@ private fun MovieGrid(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { onMovieClick(movie.id) },
+                    .clickable { onMovieClicked(movie.id) },
             ) {
                 AsyncImage(
                     model = movie.posterPath,
@@ -166,9 +166,9 @@ private fun MovieGrid(
 
 @Composable
 fun SearchBar(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
     isEnabled: Boolean,
 ) {
     OutlinedTextField(
@@ -187,7 +187,7 @@ fun SearchBar(
 @Composable
 fun HomeScreenPreview() {
     HomeScreenContent(
-        onMovieClick = {},
+        onMovieClicked = {},
         onSearchBarClick = {},
         uiState = UiState.Success(
             HomeScreenState(

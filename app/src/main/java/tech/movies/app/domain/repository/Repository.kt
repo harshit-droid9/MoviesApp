@@ -7,4 +7,6 @@ interface Repository {
     fun fetchTrendingMovies(): Flow<List<Movie>>
 
     fun getMovieById(movieId: Int): Flow<Movie>
+
+    suspend fun searchMovies(query: String): List<Movie>
 }

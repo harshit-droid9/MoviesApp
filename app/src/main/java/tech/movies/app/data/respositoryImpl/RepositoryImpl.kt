@@ -32,6 +32,10 @@ class RepositoryImpl @Inject constructor(
         return localDataSource.getMovieById(movieId)
     }
 
+    override suspend fun searchMovies(query: String): List<Movie> {
+        return localDataSource.searchMovies(query)
+    }
+
     private suspend fun refreshTrendingMovies() {
         withContext(Dispatchers.IO) {
             val data = remoteDataSource.getTrendingMovieForWeek().toDbEntities()
