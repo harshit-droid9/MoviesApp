@@ -11,7 +11,7 @@ class LocalDataSource @Inject constructor(
     private val pref: AppPreferences
 ) {
 
-    suspend fun getTrendingMovies(): Flow<List<MovieEntity>> {
+    fun getTrendingMovies(): Flow<List<MovieEntity>> {
         return moviesDao.getAllMovies()
     }
 
