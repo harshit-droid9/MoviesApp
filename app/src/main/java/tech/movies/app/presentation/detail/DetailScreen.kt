@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun DetailScreen(
-    movieId: String,
+    movieId: Int,
     onBackPress: () -> Unit
 ) {
+    println("Harshit @@@ movie id $movieId")
 }

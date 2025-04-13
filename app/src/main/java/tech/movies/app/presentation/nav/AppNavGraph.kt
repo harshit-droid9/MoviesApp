@@ -23,22 +23,22 @@ fun AppNavGraph(
             HomeScreen(
                 onMovieClick = {
                     navController.navigate(
-                        ScreenRoutes.Detail.route.replace("{movie_id}", it)
+                        ScreenRoutes.Detail.route.replace("{movie_id}", it.toString())
                     )
                 },
                 onSearchBarClick = {
-                    navController.navigate(ScreenRoutes.Search)
+                    navController.navigate(ScreenRoutes.Search.route)
                 }
             )
         }
 
         composable(
             route = ScreenRoutes.Detail.route,
-            arguments = listOf(navArgument("movie_id") { type = NavType.StringType })
+            arguments = listOf(navArgument("movie_id") { type = NavType.IntType })
         ) { backStackEntry ->
             DetailScreen(
-                movieId = backStackEntry.arguments?.getString("movieId")
-                    ?: throw IllegalArgumentException("Movie Id is missing"),
+                movieId = backStackEntry.arguments?.getInt("movie_id")
+                    ?: throw IllegalArgumentException("Movie id is missing"),
                 onBackPress = {
                     navController.popBackStack()
                 }
