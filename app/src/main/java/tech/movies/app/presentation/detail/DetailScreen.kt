@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -100,7 +101,9 @@ fun DetailScreenContent(
                                 .fillMaxWidth()
                                 .height(360.dp)
                                 .clip(RoundedCornerShape(8.dp)),
-                            contentScale = ContentScale.FillBounds
+                            contentScale = ContentScale.FillBounds,
+                            error = painterResource(R.drawable.ic_launcher_foreground),
+                            fallback = painterResource(R.drawable.ic_launcher_foreground)
                         )
 
                         Spacer(Modifier.height(16.dp))

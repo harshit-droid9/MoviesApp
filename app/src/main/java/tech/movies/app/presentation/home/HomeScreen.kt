@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
@@ -35,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import tech.movies.app.R
 import tech.movies.app.base.UiState
@@ -132,7 +134,9 @@ fun MovieGrid(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(160.dp)
-                        .clip(RoundedCornerShape(4.dp))
+                        .clip(RoundedCornerShape(4.dp)),
+                    error = painterResource(R.drawable.ic_launcher_foreground),
+                    fallback = painterResource(R.drawable.ic_launcher_foreground)
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
@@ -161,7 +165,12 @@ fun SearchBar(
         onValueChange = { newValue ->
             onValueChange(newValue.copy(selection = TextRange(newValue.text.length)))
         },
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = stringResource(R.string.search)) },
+        leadingIcon = {
+            Icon(
+                Icons.Default.Search,
+                contentDescription = stringResource(R.string.search)
+            )
+        },
         placeholder = { Text(stringResource(R.string.search_movies)) },
         singleLine = true,
         modifier = modifier,
