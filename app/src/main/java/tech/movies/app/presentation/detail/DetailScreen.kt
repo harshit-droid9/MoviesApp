@@ -25,11 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import tech.movies.app.R
 import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
 import tech.movies.app.presentation.util.UiStateHandler
@@ -126,7 +128,7 @@ fun DetailScreenContent(
                     modifier = modifier,
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("Something Went Wrong!")
+                    Text(stringResource(R.string.something_went_wrong))
                 }
             }
         }

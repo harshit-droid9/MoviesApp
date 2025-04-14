@@ -12,7 +12,6 @@ class AppPreferences @Inject constructor(
 ) {
     companion object {
         private const val KEY_LAST_SYNC = "last_sync_epoch_ms"
-
     }
 
     suspend fun saveLastSyncTime(epochMillis: Long) {

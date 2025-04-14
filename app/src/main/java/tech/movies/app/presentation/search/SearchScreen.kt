@@ -1,10 +1,13 @@
 package tech.movies.app.presentation.search
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,10 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tech.movies.app.R
 import tech.movies.app.common.UiState
 import tech.movies.app.domain.model.Movie
 import tech.movies.app.presentation.home.MovieGrid
@@ -83,13 +89,22 @@ fun SearchScreenContent(
                     isEnabled = true
                 )
 
-                MovieGrid(
-                    movies = state.results,
-                    onMovieClicked = onMovieClicked,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
+                if (state.results.isNotEmpty()) {
+                    MovieGrid(
+                        movies = state.results,
+                        onMovieClicked = onMovieClicked,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
+                } else {
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(R.string.no_result_found),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     )
