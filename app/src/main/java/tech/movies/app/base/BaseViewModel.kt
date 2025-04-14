@@ -22,7 +22,14 @@ abstract class BaseViewModel<S>(
                 .collect { send(it) }
         }
 
-        initialLoad()?.let { flow ->
+        val loadInitial = try {
+            initialLoad()
+        } catch (e: Exception) {
+            send(UiState.Error(e.message ?: "Unknown error"))
+            null
+        }
+
+        loadInitial?.let { flow ->
             launch {
                 send(UiState.Loading)
                 flow
@@ -30,7 +37,7 @@ abstract class BaseViewModel<S>(
                         send(UiState.Error(e.message ?: "Unknown error"))
                     }
                     .collect { newState ->
-                        currentState.value = newState
+                        setState { newState }
                         send(UiState.Success(newState))
                     }
             }
