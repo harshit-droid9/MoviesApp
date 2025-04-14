@@ -1,4 +1,4 @@
-package tech.movies.app.common
+package tech.movies.app.base
 
 sealed interface UiState<out T> {
     data object Loading : UiState<Nothing>

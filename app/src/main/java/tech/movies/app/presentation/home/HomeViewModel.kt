@@ -3,7 +3,7 @@ package tech.movies.app.presentation.home
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import tech.movies.app.common.BaseViewModel
+import tech.movies.app.base.BaseViewModel
 import tech.movies.app.domain.repository.Repository
 import javax.inject.Inject
 

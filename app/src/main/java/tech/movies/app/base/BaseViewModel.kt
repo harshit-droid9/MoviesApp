@@ -1,4 +1,4 @@
-package tech.movies.app.common
+package tech.movies.app.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

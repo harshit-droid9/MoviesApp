@@ -6,7 +6,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 import kotlinx.coroutines.launch
-import tech.movies.app.common.BaseViewModel
+import tech.movies.app.base.BaseViewModel
 import tech.movies.app.domain.repository.Repository
 import javax.inject.Inject
 

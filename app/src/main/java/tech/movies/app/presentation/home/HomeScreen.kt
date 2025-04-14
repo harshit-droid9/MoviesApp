@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import tech.movies.app.R
-import tech.movies.app.common.UiState
+import tech.movies.app.base.UiState
 import tech.movies.app.domain.model.Movie
 import tech.movies.app.presentation.util.UiStateHandler
 

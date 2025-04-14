@@ -2,8 +2,6 @@ package tech.movies.app.data.local.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
-import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,9 +21,7 @@ object LocalModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext ctx: Context): MovieDatabase =
-        Room
-            .databaseBuilder(ctx, MovieDatabase::class.java, "movies.db")
-            .build()
+        MovieDatabase.getInstance(ctx)
 
     @Provides
     fun provideMovieDao(db: MovieDatabase): MoviesDao = db.moviesDao()
@@ -37,6 +33,6 @@ object LocalModule {
 
     @Provides
     @Singleton
-    fun provideSyncPrefs(prefs: android.content.SharedPreferences): AppPreferences =
+    fun provideSyncPrefs(prefs: SharedPreferences): AppPreferences =
         AppPreferences(prefs)
 }
