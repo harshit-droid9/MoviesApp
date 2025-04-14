@@ -10,10 +10,19 @@ abstract class BaseViewModel<S>(
     showLoading: Boolean,
 ) : ViewModel() {
 
+    /** Single source of truth for the plain screen state. */
     protected val currentState = MutableStateFlow(initial)
+
+    /** Internal pipe that [setState] pushes into. */
     private val _uiState = MutableStateFlow<UiState<S>>(UiState.Success(initial))
 
-    /** Exposed state for ui screen to consume it */
+    /**
+     * Stream collected by the UI layer.
+     *
+     * Cold until the first collector appears.
+     * Re‑emits every update from [setState].
+     * Runs [initialLoad] exactly once per active subscription set.
+     */
     val uiState: StateFlow<UiState<S>> = channelFlow {
 
         launch {
@@ -49,9 +58,26 @@ abstract class BaseViewModel<S>(
             initialValue = if (showLoading) UiState.Loading else UiState.Success(initial)
         )
 
-    /** Use for loading initial data, something we wanted to load on start of the screen*/
+    /**
+     * Override to provide a **cold** flow that loads the first page of data.
+     *
+     * - It is collected lazily—the flow does **not** start until `uiState`
+     *   has at least one active collector.
+     * * **Do not** register long‑lived listeners or open resources here.
+     *   If you must, register a clean‑up block in `onCleared()`.
+     *
+     * Return `null` (default) if no start‑up fetch is needed.
+     */
     protected open fun initialLoad(): Flow<S>? = null
 
+    /**
+     * Atomically transforms the current screen state.
+     *
+     * Thread‑safe—may be called from any dispatcher.
+     *
+     * @param reducer lambda that receives the **current** state and returns
+     *                the **new** state.
+     */
     protected fun setState(reducer: S.() -> S) {
         currentState.update { currentState.value.reducer() }
         _uiState.tryEmit(UiState.Success(currentState.value))

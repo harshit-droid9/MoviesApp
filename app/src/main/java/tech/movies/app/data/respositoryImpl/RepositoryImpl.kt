@@ -33,7 +33,9 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun searchMovies(query: String): List<Movie> {
-        return localDataSource.searchMovies(query)
+        return withContext(Dispatchers.IO) {
+            localDataSource.searchMovies(query)
+        }
     }
 
     private suspend fun refreshTrendingMovies() {

@@ -16,10 +16,6 @@ class LocalDataSource @Inject constructor(
         return moviesDao.getAllMovies()
     }
 
-    suspend fun insertMovies(movies: List<MovieEntity>) {
-        return moviesDao.insert(movies)
-    }
-
     suspend fun refreshMovies(movies: List<MovieEntity>) {
         return moviesDao.refreshMoviesData(movies)
     }
