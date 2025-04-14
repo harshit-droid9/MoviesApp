@@ -33,5 +33,5 @@ dates.
 ### MoviesApp Demo
 
 <a href="https://github.com/user-attachments/assets/e24e8065-4952-4a88-8561-3ad44f8c1618">
-    <img src="https://github.com/user-attachments/assets/1454b8b5-c06a-45ec-98ed-c0b23ec78a75" width="300" alt="Watch the demo" />
+    <img src="https://github.com/user-attachments/assets/0044f9bf-9b14-458a-8b6c-e19a38795386" width="300" alt="Watch the demo" />
 </a>
