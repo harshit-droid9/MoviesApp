@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: Repository
-) : BaseViewModel<SearchScreenState>(SearchScreenState(), isLoading = false) {
+) : BaseViewModel<SearchScreenState>(SearchScreenState(), showLoading = false) {
 
     private var searchJob: Job? = null
     fun onQueryChanged(newQuery: String) {

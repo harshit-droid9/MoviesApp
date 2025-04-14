@@ -12,7 +12,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val repository: Repository,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<DetailScreenState>(DetailScreenState(), isLoading = true) {
+) : BaseViewModel<DetailScreenState>(DetailScreenState(), showLoading = true) {
 
     private val movieId: Int = savedStateHandle.get<Int>("movie_id")
         ?: throw IllegalStateException("movie id was not passed with args")

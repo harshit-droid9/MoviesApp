@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: Repository
-) : BaseViewModel<HomeScreenState>(HomeScreenState(), isLoading = true) {
+) : BaseViewModel<HomeScreenState>(HomeScreenState(), showLoading = true) {
 
     override fun initialLoad(): Flow<HomeScreenState> =
         repository.fetchTrendingMovies()
