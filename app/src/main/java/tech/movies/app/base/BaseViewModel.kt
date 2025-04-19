@@ -13,9 +13,6 @@ abstract class BaseViewModel<S>(
     /** Single source of truth for the plain screen state. */
     protected val currentState = MutableStateFlow(initial)
 
-    /** Internal pipe that [setState] pushes into. */
-    private val _uiState = MutableStateFlow<UiState<S>>(UiState.Success(initial))
-
     /**
      * Stream collected by the UI layer.
      *
@@ -26,9 +23,9 @@ abstract class BaseViewModel<S>(
     val uiState: StateFlow<UiState<S>> = channelFlow {
 
         launch {
-            _uiState
+            currentState
                 .drop(1) // we already sending with initial value
-                .collect { send(it) }
+                .collect { send(UiState.Success(it)) }
         }
 
         val loadInitial = try {
@@ -80,6 +77,5 @@ abstract class BaseViewModel<S>(
      */
     protected fun setState(reducer: S.() -> S) {
         currentState.update { currentState.value.reducer() }
-        _uiState.tryEmit(UiState.Success(currentState.value))
     }
 }
