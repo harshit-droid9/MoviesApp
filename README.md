@@ -27,8 +27,7 @@ ratings, and high‑quality images.
 ### TMDb API:
 
 We use the TMDb API to retrieve trending movies and detailed movie information. This integration
-ensures that users have access to the latest film data including images, summaries, and release
-dates.
+ensures that users have access to the latest film data including images, summaries
 
 ### MoviesApp Demo
 
